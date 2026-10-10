@@ -24,5 +24,3 @@ Repositori informasi kelompok untuk mata kuliah **AI (Kecerdasan Buatan)**.
 | Tugas | Judul | Repositori |
 | --- | --- | --- |
 | Tugas 1 | [Judul Tugas] | [Tugas_1_[Judul_]](https://github.com/USERNAME/NAMA_REPOSITORI_TUGAS_1) |
-
-> Ganti seluruh placeholder dengan informasi kelompok dan tautan repositori yang sebenarnya.
