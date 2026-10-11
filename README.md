@@ -17,7 +17,7 @@ Repositori informasi kelompok untuk mata kuliah **AI (Kecerdasan Buatan)**.
 | --- | --- | --- |
 | 1 | Lintang Yoga Wistara | 101022400105 |
 | 2 | Ahmad Musyaffa Akmal | 101022400084 |
-| 3 | [Nama Anggota 3] | [NIM Anggota 3] |
+| 3 | Miguel Christian Gilardino | 101022400121 |
 
 ## Daftar Tugas
 
