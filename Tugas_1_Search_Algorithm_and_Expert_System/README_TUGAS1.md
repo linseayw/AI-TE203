@@ -1,157 +1,87 @@
-# Tugas 1 : Sistem Layanan Gangguan Wi-Fi Sederhana Menggunakan Algoritma BFS dan NLP Berbasis Kata Kunci 
-
-**Mata Kuliah:** AI (Kecerdasan Buatan)  
-**Kelas:** TE403  
-**Kelompok:** 4
+# Tugas 1 : Sistem Layanan Gangguan Wi-Fi Sederhana Menggunakan Algoritma BFS dan NLP Berbasis Kata Kunci
 
 # Introduction
 
-Program ini menggabungkan dua pendekatan kecerdasan buatan:
+Program ini merupakan asisten layanan gangguan Wi-Fi berbasis terminal.
+Pengguna menyampaikan keluhan dalam bahasa sehari-hari, kemudian program
+mengenali gejala melalui pencocokan kata kunci.
 
-1. **Expert System:** memeriksa gejala laptop menggunakan aturan
-   `if-elif-else` untuk memberikan dugaan masalah dan rekomendasi layanan.
-2. **Search Algorithm:** menggunakan Breadth-First Search (BFS) untuk
-   mencari rute menuju lokasi layanan yang direkomendasikan.
+Sistem berbasis aturan menentukan cabang bantuan berdasarkan gejala,
+informasi gangguan area, dan jumlah perangkat yang terdampak. Pada setiap
+langkah yang bukan langkah terakhir, pengguna mengonfirmasi apakah koneksi
+sudah dapat digunakan. Jika berhasil, sesi bantuan selesai. Jika belum,
+program melanjutkan ke langkah berikutnya.
 
-Pengguna menjawab pertanyaan melalui terminal. Hasil sistem pakar
-menentukan tujuan pencarian BFS sehingga kedua pendekatan saling terhubung.
+## NLP Berbasis Kata Kunci
+
+Natural Language Processing (NLP) digunakan secara sederhana untuk
+menghubungkan kalimat keluhan dengan kategori gejala.
+
+Fungsi `deteksi()` mengubah teks menjadi huruf kecil, kemudian mencari
+kata kunci menggunakan pencocokan substring.
+
+| Kode | Gejala | Contoh Kata Kunci |
+| --- | --- | --- |
+| A1 | Tidak ada internet | tidak ada internet, internet mati, offline |
+| A2 | Internet lambat | lambat, lemot, loading lama |
+| A3 | Internet putus-putus | putus-putus, sering putus, hilang timbul |
+| B1 | Sinyal lemah | sinyal lemah, jauh dari router |
+| B2 | Wi-Fi tidak terdeteksi | tidak muncul, tidak terlihat |
+| C1 | Sandi Wi-Fi bermasalah | sandi salah, lupa sandi |
+| E1 | Beban perangkat berlebih | banyak perangkat, banyak yang pakai |
+
+Jika beberapa kategori cocok, program mengambil kategori pertama
+berdasarkan urutan pada kamus `GEJALA`. Jika tidak ada kecocokan,
+fungsi mengembalikan `None`.
+
+NLP ini berbasis aturan dan belum menggunakan model machine learning.
 
 ## Aturan Sistem Pakar
 
-| Aturan | Kondisi | Tujuan Layanan |
+Program menggunakan aturan langsung melalui `if-elif-else`.
+Aturan menentukan cabang bantuan, bukan memastikan penyebab kerusakan.
+
+| Prioritas | Kondisi | Keputusan |
 | --- | --- | --- |
-| R1 | Laptop tidak menyala | Pusat Servis |
-| R2 | Laptop menyala dan panas berlebihan | Pusat Servis |
-| R3 | Laptop menyala, tidak panas, tetapi lambat | Lab Komputer |
-| R4 | Laptop menyala, tidak panas, dan tidak lambat | Tidak diperlukan |
+| 1 | Aplikasi layanan menunjukkan gangguan area | Tampilkan informasi gangguan dan akhiri sesi bantuan |
+| 2 | Tidak ada gangguan area dan gejala terdeteksi C1 | Pilih cabang pemeriksaan sandi |
+| 3 | Semua perangkat terdampak dan gejala A1, A2, atau A3 | Pilih cabang sesuai gejala tersebut |
+| 4 | Semua perangkat terdampak, tetapi gejala bukan A1, A2, atau A3 | Gunakan cabang A1 sebagai pilihan bawaan |
+| 5 | Tidak semua perangkat terdampak dan gejala B1, B2, atau E1 | Pilih cabang sesuai gejala tersebut |
+| 6 | Tidak semua perangkat terdampak, tetapi gejala bukan B1, B2, atau E1 | Gunakan cabang B1 sebagai pilihan bawaan |
 
-Aturan diperiksa dari R1 hingga R4. Jika beberapa gejala muncul bersamaan,
-aturan dengan prioritas lebih tinggi digunakan.
+Pilihan bawaan merupakan penyederhanaan pada program dan tidak membuktikan
+bahwa masalah sebenarnya adalah gangguan internet umum atau sinyal lemah.
 
-Implementasi ini merupakan sistem berbasis aturan langsung, tanpa
-forward chaining bertingkat. Hasilnya merupakan dugaan awal untuk latihan.
+### Langkah pada Setiap Cabang
 
-## Pencarian BFS
+| Cabang | Urutan Bantuan |
+| --- | --- |
+| A1 | Restart router → Ganti DNS → Eskalasi ke teknisi |
+| A2 | Kurangi beban jaringan → Restart router → Ganti DNS → Eskalasi ke teknisi |
+| A3 | Restart router → Eskalasi ke teknisi |
+| B1 | Perbaiki posisi → Eskalasi ke teknisi |
+| B2 | Sambung ulang → Eskalasi ke teknisi |
+| C1 | Cek sandi terbaru |
+| E1 | Kurangi beban jaringan → Restart router → Eskalasi ke teknisi |
 
-BFS menelusuri lokasi menggunakan antrean. Lokasi yang sudah ditemukan
-ditandai agar tidak diperiksa berulang kali.
+Pada langkah yang bukan langkah terakhir:
 
-Peta menggunakan graf dua arah tanpa bobot. Karena itu, rute BFS memiliki
-jumlah sisi paling sedikit, bukan berdasarkan jarak fisik atau waktu tempuh.
+- Jawaban `y` atau `ya` menghentikan sesi dengan pesan `Selesai.`
+- Jawaban `n` atau `tidak` melanjutkan ke langkah berikutnya.
+- Jawaban `q` menghentikan program.
+
+Langkah terakhir ditampilkan tanpa pertanyaan keberhasilan.
+Khusus cabang C1, program langsung kembali ke menu setelah memberikan
+panduan sandi karena cabang tersebut hanya memiliki satu langkah.
+
+## Search Algorithm BFS
+
+Breadth-First Search (BFS) adalah algoritma pencarian yang menelusuri
+simpul berdasarkan tingkat kedalaman. BFS menggunakan antrean FIFO:
+simpul yang masuk lebih dahulu diperiksa lebih dahulu.
+
+Pada graf tanpa bobot, BFS dapat menemukan jalur dengan jumlah sisi
+paling sedikit dari simpul awal menuju tujuan.
 
 # Requirement & Library
-
-## Kebutuhan
-
-- Python 3.10 atau lebih baru.
-- Terminal atau terminal bawaan VS Code.
-- Git, jika mengunduh menggunakan `git clone`.
-
-## Library
-
-| Library/Komponen | Kegunaan | Instalasi |
-| --- | --- | --- |
-| `collections.deque` | Antrean BFS | Bawaan Python |
-| `dict`, `list`, `set` | Peta, jalur, dan penanda simpul | Bawaan Python |
-| `input`, `print` | Interaksi terminal | Bawaan Python |
-
-Jika Python belum terpasang, unduh dari:
-https://www.python.org/downloads/
-
-Periksa instalasi:
-
-```bash
-python --version
-```
-
-Pada sistem yang menggunakan `python3`:
-
-```bash
-python3 --version
-```
-
-# How to Run
-
-## 1. Download Repositori
-
-Download ZIP, ekstrak, lalu buka folder proyek melalui
-**File → Open Folder** di VS Code.
-
-## 2. Periksa Berkas
-
-Pastikan folder proyek berisi:
-
-- `main.py`: kode program.
-- `README.md`: dokumentasi.
-
-## 3. Buka Terminal
-
-Di VS Code, pilih **Terminal → New Terminal**.
-
-Pastikan terminal berada pada folder yang berisi `main.py`.
-
-## 4. Jalankan Program
-
-```bash
-python main.py
-```
-
-Alternatif pada macOS/Linux:
-
-```bash
-python3 main.py
-```
-
-## 5. Gunakan Menu
-
-1. Ketik `1` untuk memeriksa gejala laptop.
-2. Jawab pertanyaan dengan `y` untuk ya atau `n` untuk tidak.
-3. Baca aturan yang aktif dan rekomendasi.
-4. Pilih lokasi awal jika diperlukan pencarian rute.
-5. Program menampilkan rute BFS dan jumlah langkah.
-6. Ketik `0` pada menu utama untuk keluar.
-
-# Running & Output
-
-## Contoh Interaksi
-
-```text
-=== SISTEM PAKAR LAPTOP DAN PENCARIAN RUTE ===
-1. Periksa gejala dan cari rute layanan
-0. Keluar
-Pilih menu: 1
-Apakah laptop bisa menyala? (y/n): y
-Apakah laptop panas berlebihan saat digunakan? (y/n): n
-Apakah laptop berjalan lambat saat digunakan? (y/n): y
-
-Aturan aktif: R3: laptop menyala, tidak panas, tetapi lambat
-Hasil: Perlu pemeriksaan aplikasi dan penggunaan sumber daya.
-
-Lokasi awal:
-1. Gerbang
-2. Perpustakaan
-3. Kantin
-4. Lab Komputer
-5. Pusat Servis
-Pilih nomor lokasi: 1
-Tujuan layanan: Lab Komputer
-Rute BFS: Gerbang -> Perpustakaan -> Lab Komputer
-Jumlah langkah: 2
-```
-
-## Penjelasan Hasil
-
-- Fakta masukan memenuhi aturan R3.
-- Sistem pakar menentukan Lab Komputer sebagai tujuan layanan.
-- BFS mencari jalur dari Gerbang menuju Lab Komputer.
-- Jalur yang ditemukan memiliki dua langkah.
-
-Jika lokasi awal sama dengan tujuan, jumlah langkah adalah nol.
-Jika tidak ada indikasi masalah dari gejala yang ditanyakan, program
-tidak meminta lokasi awal dan tidak menjalankan pencarian rute.
-
-## Kesimpulan
-
-Program menunjukkan bahwa keputusan sistem pakar dapat menjadi masukan
-bagi algoritma pencarian. Sistem pakar menentukan tujuan layanan,
-sedangkan BFS menentukan jalur menuju tujuan tersebut.
