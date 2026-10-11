@@ -62,3 +62,65 @@ LANGKAH = {
         ("Ganti DNS",
          "Kemungkinan masalah di DNS. Ikuti panduan di: "
          "https://penyedia.example/panduan/dns"),
+        ("Eskalasi ke teknisi",
+         "Hubungi CS di 1500-xxx atau buat laporan di aplikasi."),
+    ],
+    "A3": [
+        ("Restart router",
+         "Cabut adaptor daya router, tunggu 30 detik, lalu pasang kembali. "
+         "Tunggu 2 menit sampai lampu indikator stabil."),
+        ("Eskalasi ke teknisi",
+         "Hubungi CS di 1500-xxx. Kemungkinan ada masalah pada kabel "
+         "atau perangkat di sisi penyedia."),
+    ],
+    "B1": [
+        ("Perbaiki posisi",
+         "Pindahkan router ke tempat lebih terbuka, atau dekatkan "
+         "perangkat ke router. Hindari dinding tebal dan logam."),
+        ("Eskalasi ke teknisi",
+         "Hubungi CS di 1500-xxx untuk permintaan perluasan jangkauan."),
+    ],
+    "B2": [
+        ("Sambung ulang",
+         "Di perangkat bermasalah: lupakan jaringan Wi-Fi, lalu "
+         "sambungkan kembali dengan sandi terbaru."),
+        ("Eskalasi ke teknisi",
+         "Hubungi CS di 1500-xxx. Kemungkinan masalah pada perangkat "
+         "atau pembatasan akun."),
+    ],
+    "C1": [
+        ("Cek sandi terbaru",
+         "Buka aplikasi layanan untuk melihat sandi Wi-Fi terbaru. "
+         "Jika belum ada, minta reset sandi lewat aplikasi atau CS."),
+    ],
+    "E1": [
+        ("Kurangi beban jaringan",
+         "Putuskan perangkat yang tidak sedang dipakai. "
+         "Cek daftar perangkat di aplikasi layanan."),
+        ("Restart router",
+         "Cabut adaptor daya router, tunggu 30 detik, lalu pasang kembali."),
+        ("Eskalasi ke teknisi",
+         "Hubungi CS di 1500-xxx. Kapasitas router mungkin perlu "
+         "ditingkatkan."),
+    ],
+}
+
+
+def tanya(pesan):
+    while True:
+        jawaban = input(pesan + " [y/n/q]: ").strip().lower()
+        if jawaban in ("y", "ya"):
+            return True
+        if jawaban in ("n", "tidak"):
+            return False
+        if jawaban == "q":
+            raise KeyboardInterrupt
+        print("Jawab y, n, atau q.")
+
+
+def deteksi(teks):
+    teks = teks.lower()
+    for kode, kata in GEJALA.items():
+        if any(k in teks for k in kata):
+            return kode
+    return None
