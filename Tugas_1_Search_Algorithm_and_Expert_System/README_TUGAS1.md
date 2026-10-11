@@ -173,3 +173,92 @@ sebelum program digunakan sebagai layanan nyata.
 
 ```text
 Asisten Wi-Fi
+Jawab y/n. Ketik q untuk berhenti.
+
+1. Mulai | 0. Keluar: 1
+Ceritakan keluhan Wi-Fi Anda: tidak ada internet
+
+Gejala terbaca: tidak ada internet
+
+Buka aplikasi layanan. Ada info gangguan di area Anda? [y/n/q]: n
+
+Apakah semua perangkat di rumah mengalami hal yang sama? [y/n/q]: y
+
+Restart router
+Cabut adaptor daya router, tunggu 30 detik, lalu pasang kembali. Tunggu 2 menit sampai lampu indikator stabil.
+
+Sudah bisa digunakan? [y/n/q]: y
+
+Selesai.
+```
+
+## Contoh 2: Lanjut ke Langkah Berikutnya
+
+Pada cabang A1, jika restart router belum berhasil:
+
+```text
+Sudah bisa digunakan? [y/n/q]: n
+
+Ganti DNS
+Kemungkinan masalah di DNS. Ikuti panduan di: https://penyedia.example/panduan/dns
+
+Sudah bisa digunakan? [y/n/q]: n
+
+Eskalasi ke teknisi
+Hubungi CS di 1500-xxx atau buat laporan di aplikasi. Sampaikan keluhan dan langkah yang sudah dicoba. Jangan bagikan kata sandi atau OTP.
+```
+
+## Contoh 3: Gangguan Area
+
+Jika pengguna menjawab `y` pada pertanyaan gangguan area:
+
+```text
+Gangguan area
+Ada gangguan dari sisi penyedia. Tunggu sampai layanan pulih. Pantau aplikasi berkala. Tidak perlu tindakan lain.
+```
+
+Program kemudian kembali ke menu utama.
+
+# Penjelasan Hasil
+
+Pada contoh pertama:
+
+1. Keluhan “tidak ada internet” cocok dengan kata kunci A1.
+2. Pengguna menyatakan tidak ada gangguan area.
+3. Pengguna menyatakan semua perangkat terdampak.
+4. Aturan memilih cabang A1.
+5. Program memberikan tindakan restart router.
+6. Pengguna mengonfirmasi koneksi berhasil sehingga sesi selesai.
+
+Pada contoh kedua, jawaban `n` menyebabkan program meneruskan tindakan
+dalam daftar cabang A1 hingga eskalasi.
+
+Program tidak menjalankan restart, mengganti DNS, atau mengukur koneksi
+secara otomatis. Keberhasilan berdasarkan jawaban pengguna.
+
+## Keterbatasan
+
+- Pencocokan kata kunci belum memahami negasi secara menyeluruh.
+  Kalimat “internet tidak lambat” masih dapat terdeteksi sebagai A2.
+- Hanya satu kategori gejala dipilih meskipun keluhan memuat beberapa gejala.
+- Kata kunci umum dapat menghasilkan kategori yang kurang sesuai.
+- Pilihan cabang bawaan belum disertai konfirmasi tambahan.
+- Cabang B2 menyarankan melupakan jaringan; tindakan ini belum tentu
+  sesuai jika nama jaringan sama sekali tidak terlihat.
+- Gangguan internet tidak selalu disebabkan DNS; rekomendasi perubahan
+  DNS memerlukan pemeriksaan dan panduan yang sesuai.
+
+Restart hanya dilakukan pada router yang boleh dikelola pengguna,
+dengan mempertimbangkan pengguna lain. Restart daya berbeda dari
+factory reset; jangan menekan tombol RESET.
+
+# Kesimpulan
+
+Program menggabungkan NLP berbasis kata kunci dan sistem berbasis aturan
+untuk memberikan panduan awal gangguan Wi-Fi melalui terminal.
+
+Keluhan pengguna menentukan kategori gejala. Informasi gangguan area
+dan cakupan perangkat menentukan cabang bantuan. Jawaban keberhasilan
+menentukan apakah sesi berhenti atau dilanjutkan.
+
+Implementasi saat ini menggunakan pemilihan cabang dan langkah berurutan yang termasuk dalam BSF.
