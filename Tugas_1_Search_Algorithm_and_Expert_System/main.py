@@ -124,3 +124,70 @@ def deteksi(teks):
         if any(k in teks for k in kata):
             return kode
     return None
+
+def bantu():
+    keluhan = input("Ceritakan keluhan Wi-Fi Anda: ").strip()
+    gejala = deteksi(keluhan)
+
+    print()
+    if gejala:
+        print("Gejala terbaca:", LABEL[gejala])
+
+    # Triage 1: cek gangguan area lewat aplikasi
+    print()
+    if tanya("Buka aplikasi layanan. Ada info gangguan di area Anda?"):
+        print()
+        print("Gangguan area")
+        print("Ada gangguan dari sisi penyedia. Tunggu sampai layanan pulih. "
+              "Pantau aplikasi berkala. Tidak perlu tindakan lain.")
+        return
+
+    # Triage 2: cakupan gangguan
+    print()
+    semua = tanya("Apakah semua perangkat di rumah mengalami hal yang sama?")
+
+    # Pilih cabang
+    if gejala == "C1":
+        cabang = "C1"
+    elif semua:
+        cabang = gejala if gejala in ("A1", "A2", "A3") else "A1"
+    else:
+        cabang = gejala if gejala in ("B1", "B2", "E1") else "B1"
+
+    # Jalankan langkah
+    langkah_list = LANGKAH[cabang]
+    for i, (judul, pesan) in enumerate(langkah_list):
+        print()
+        print(judul)
+        print(pesan)
+
+        terakhir = (i == len(langkah_list) - 1)
+        if terakhir:
+            return
+
+        if tanya("\nSudah bisa digunakan?"):
+            print()
+            print("Selesai.")
+            return
+
+
+def main():
+    print("Asisten Wi-Fi")
+    print("Jawab y/n. Ketik q untuk berhenti.")
+    while True:
+        print()
+        pilihan = input("1. Mulai | 0. Keluar: ").strip()
+        if pilihan == "0":
+            print("Program selesai.")
+            return
+        if pilihan == "1":
+            bantu()
+        else:
+            print("Pilih 1 atau 0.")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print("\nDihentikan.")
