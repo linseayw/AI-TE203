@@ -1,4 +1,4 @@
-# Tugas_1_Sistem_Pakar_dan_Pencarian_AI
+# Tugas 1 : Sistem Layanan Gangguan Wi-Fi Sederhana Menggunakan Algoritma BFS dan NLP Berbasis Kata Kunci 
 
 **Mata Kuliah:** AI (Kecerdasan Buatan)  
 **Kelas:** TE403  
