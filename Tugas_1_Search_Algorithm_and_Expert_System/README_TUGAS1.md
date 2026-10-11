@@ -85,3 +85,91 @@ Pada graf tanpa bobot, BFS dapat menemukan jalur dengan jumlah sisi
 paling sedikit dari simpul awal menuju tujuan.
 
 # Requirement & Library
+## Kebutuhan Perangkat Lunak
+
+- Python 3.10 atau lebih baru.
+- Terminal atau PowerShell.
+- VS Code atau editor lain, opsional.
+- Git, opsional untuk mengunduh repositori melalui terminal.
+
+## Library
+
+Kode mengimpor `re`, yang merupakan library bawaan Python untuk
+pemrosesan pola teks. Namun, pada versi ini `re` belum digunakan;
+pencocokan kata kunci menggunakan operator `in`.
+
+Komponen bawaan yang digunakan:
+
+| Komponen | Fungsi |
+| --- | --- |
+| `dict` | Menyimpan label, kata kunci, dan langkah bantuan |
+| `list` dan `tuple` | Menyimpan urutan tindakan |
+| `input()` | Menerima masukan pengguna |
+| `print()` | Menampilkan panduan |
+| `any()` | Memeriksa kecocokan salah satu kata kunci |
+| `enumerate()` | Menelusuri langkah beserta indeksnya |
+
+Tidak ada library eksternal sehingga tidak diperlukan `pip install`.
+
+Periksa instalasi Python:
+
+```bash
+python --version
+```
+
+Pada sistem yang menggunakan `python3`:
+
+```bash
+python3 --version
+```
+
+# How to Run
+
+## 1. Clone atau Download
+
+```bash
+git clone https://github.com/linseayw/AI-TE403.git
+cd NAMA_REPOSITORI
+```
+
+Alternatif: download ZIP repositori, ekstrak, kemudian buka foldernya
+melalui **File → Open Folder** di VS Code.
+
+## 2. Buka Terminal
+
+Di VS Code, pilih **Terminal → New Terminal**.
+
+Pastikan terminal berada pada folder yang berisi `main.py`.
+
+## 3. Jalankan Program
+
+```bash
+python main.py
+```
+
+Alternatif pada macOS/Linux:
+
+```bash
+python3 main.py
+```
+
+## 4. Gunakan Program
+
+1. Pilih menu `1`.
+2. Ketik keluhan Wi-Fi.
+3. Jawab pertanyaan tentang gangguan area.
+4. Jika tidak ada gangguan area, jawab cakupan perangkat yang terdampak.
+5. Ikuti panduan yang diberikan.
+6. Jawab apakah koneksi sudah bisa digunakan.
+7. Pilih menu `0` untuk keluar atau ketik `q` saat menjawab pertanyaan.
+
+URL `https://penyedia.example/panduan/dns` dan nomor `1500-xxx`
+merupakan placeholder. Ganti dengan panduan dan kontak resmi penyedia
+sebelum program digunakan sebagai layanan nyata.
+
+# Running & Output
+
+## Contoh 1: Berhasil Setelah Restart Router
+
+```text
+Asisten Wi-Fi
