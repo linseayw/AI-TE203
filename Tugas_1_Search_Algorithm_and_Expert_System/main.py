@@ -24,7 +24,7 @@ GEJALA = {
            "berat", "ngadat", "susah dibuka"],
     "A3": ["putus-putus", "putus nyambung", "hilang timbul",
            "kadang bisa kadang tidak", "sering putus",
-           "sering terputus"],
+           "sering terputus", "putus"],
     "B1": ["sinyal lemah", "sinyal jelek", "jauh dari router",
            "jangkauan", "tidak sampai", "lemah di kamar"],
     "B2": ["tidak terdeteksi", "tidak muncul", "tidak ketemu",
@@ -119,10 +119,15 @@ def tanya(pesan):
 
 
 def deteksi(teks):
-    teks = teks.lower()
-    for kode, kata in GEJALA.items():
-        if any(k in teks for k in kata):
-            return kode
+    # Membersihkan spasi berlebih dan mengubah menjadi lowercase
+    teks = " ".join(teks.lower().split())
+
+    for kode, kata_kunci_list in GEJALA.items():
+        for kata in kata_kunci_list:
+            # Menggunakan regex untuk mencocokkan kata secara fleksibel
+            pola = rf"\b{re.escape(kata)}\b"
+            if re.search(pola, teks) or kata in teks:
+                return kode
     return None
 
 def bantu():
@@ -131,9 +136,12 @@ def bantu():
 
     print()
     if gejala:
-        print("Gejala terbaca:", LABEL[gejala])
+    print("Gejala terbaca:", LABEL[gejala])
+else:
+    print("Gejala tidak spesifik, kami akan menganalisis lebih lanjut.")
 
     # Triage 1: cek gangguan area lewat aplikasi
+    if gejala != "C1":
     print()
     if tanya("Buka aplikasi layanan. Ada info gangguan di area Anda?"):
         print()
@@ -146,13 +154,14 @@ def bantu():
     print()
     semua = tanya("Apakah semua perangkat di rumah mengalami hal yang sama?")
 
-    # Pilih cabang
-    if gejala == "C1":
-        cabang = "C1"
-    elif semua:
-        cabang = gejala if gejala in ("A1", "A2", "A3") else "A1"
-    else:
-        cabang = gejala if gejala in ("B1", "B2", "E1") else "B1"
+   # Menentukan cabang langsung dari deteksi gejala
+if gejala:
+    cabang = gejala
+else:
+    # Triage 2: Hanya bertanya jika gejalanya benar-benar tidak terdeteksi
+    print()
+    semua = tanya("Apakah semua perangkat di rumah mengalami hal yang sama?")
+    cabang = "A1" if semua else "B1"
 
     # Jalankan langkah
     langkah_list = LANGKAH[cabang]
