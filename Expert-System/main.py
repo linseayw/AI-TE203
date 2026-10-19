@@ -1,7 +1,7 @@
 import re
 
 # ------------------------------------------------------------------
-# Label gejala untuk ditampilkan ke user
+# Label gejala untuk ditampilkan ke pengguna
 # ------------------------------------------------------------------
 LABEL = {
     "A1": "tidak ada internet",
