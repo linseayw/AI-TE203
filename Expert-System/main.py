@@ -126,7 +126,7 @@ def deteksi(teks):
         for kata in kata_kunci_list:
             # Menggunakan regex untuk mencocokkan kata secara fleksibel
             pola = rf"\b{re.escape(kata)}\b"
-            if re.search(pola, teks) or kata in teks:
+            if re.search(pola, teks):
                 return kode
     return None
 
@@ -135,42 +135,45 @@ def bantu():
     gejala = deteksi(keluhan)
 
     print()
+
+    # Menampilkan hasil deteksi gejala
     if gejala:
-    print("Gejala terbaca:", LABEL[gejala])
-else:
-    print("Gejala tidak spesifik, kami akan menganalisis lebih lanjut.")
+        print("Gejala terbaca:", LABEL[gejala])
+    else:
+        print("Gejala tidak spesifik, kami akan menganalisis lebih lanjut.")
 
     # Triage 1: cek gangguan area lewat aplikasi
     if gejala != "C1":
-    print()
-    if tanya("Buka aplikasi layanan. Ada info gangguan di area Anda?"):
         print()
-        print("Gangguan area")
-        print("Ada gangguan dari sisi penyedia. Tunggu sampai layanan pulih. "
-              "Pantau aplikasi berkala. Tidak perlu tindakan lain.")
-        return
+        if tanya("Buka aplikasi layanan. Ada info gangguan di area Anda?"):
+            print()
+            print("Gangguan area")
+            print("Ada gangguan dari sisi penyedia. Tunggu sampai layanan pulih. "
+                  "Pantau aplikasi berkala. Tidak perlu tindakan lain.")
+            return
 
-    # Triage 2: cakupan gangguan
-    print()
-    semua = tanya("Apakah semua perangkat di rumah mengalami hal yang sama?")
+    # Menentukan cabang langsung dari deteksi gejala
+    if gejala:
+        cabang = gejala
+    else:
+        # Triage 2: hanya bertanya jika gejala tidak terdeteksi
+        print()
+        semua = tanya(
+            "Apakah semua perangkat di rumah mengalami hal yang sama?"
+        )
+        cabang = "A1" if semua else "B1"
 
-   # Menentukan cabang langsung dari deteksi gejala
-if gejala:
-    cabang = gejala
-else:
-    # Triage 2: Hanya bertanya jika gejalanya benar-benar tidak terdeteksi
-    print()
-    semua = tanya("Apakah semua perangkat di rumah mengalami hal yang sama?")
-    cabang = "A1" if semua else "B1"
-
-    # Jalankan langkah
+    # Menjalankan langkah penanganan sesuai cabang
     langkah_list = LANGKAH[cabang]
+
     for i, (judul, pesan) in enumerate(langkah_list):
         print()
         print(judul)
         print(pesan)
 
         terakhir = (i == len(langkah_list) - 1)
+
+        # Langkah terakhir selalu eskalasi tanpa prompt
         if terakhir:
             return
 
