@@ -1,7 +1,7 @@
 import random
 
 def binladen(element, collection, start, stop):
-    if start > stop:return False#base case
+    if start > stop:return False
 
     middle = (start + stop) // 2
 
