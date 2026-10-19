@@ -1,4 +1,4 @@
-# Tugas 1 : Sistem Layanan Gangguan Wi-Fi Sederhana Menggunakan Algoritma BFS dan NLP Berbasis Kata Kunci
+# Tugas 1 : Sistem Layanan Gangguan Wi-Fi Sederhana Menggunakan NLP Berbasis Kata Kunci dan Expert System berbasis aturan
 
 # Introduction
 
@@ -74,15 +74,6 @@ Pada langkah yang bukan langkah terakhir:
 Langkah terakhir ditampilkan tanpa pertanyaan keberhasilan.
 Khusus cabang C1, program langsung kembali ke menu setelah memberikan
 panduan sandi karena cabang tersebut hanya memiliki satu langkah.
-
-## Search Algorithm BFS
-
-Breadth-First Search (BFS) adalah algoritma pencarian yang menelusuri
-simpul berdasarkan tingkat kedalaman. BFS menggunakan antrean FIFO:
-simpul yang masuk lebih dahulu diperiksa lebih dahulu.
-
-Pada graf tanpa bobot, BFS dapat menemukan jalur dengan jumlah sisi
-paling sedikit dari simpul awal menuju tujuan.
 
 # Requirement & Library
 ## Kebutuhan Perangkat Lunak
@@ -254,11 +245,9 @@ factory reset; jangan menekan tombol RESET.
 
 # Kesimpulan
 
-Program menggabungkan NLP berbasis kata kunci dan sistem berbasis aturan
+Program menggabungkan NLP berbasis kata kunci dan sistem expert berbasis aturan
 untuk memberikan panduan awal gangguan Wi-Fi melalui terminal.
 
 Keluhan pengguna menentukan kategori gejala. Informasi gangguan area
 dan cakupan perangkat menentukan cabang bantuan. Jawaban keberhasilan
 menentukan apakah sesi berhenti atau dilanjutkan.
-
-Implementasi saat ini menggunakan pemilihan cabang dan langkah berurutan yang termasuk dalam BSF.
